@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Peppertones - Ready, Get Set, Go!</title>
+  <style type="text/CSS">
+    h1{
+    border-bottom: 1px solid grey;
+    padding-bottom: 15px;
+  }
+  h2{
+    border-bottom: 1px solid grey;
+    padding-bottom: 15px;
+    margin-top: 50px;
+  }
+  .c-all{
+    padding: 20px;
+  }
+  </style>
+  <meta charset="utf-8">
+</head>
+
+<body>
+  <div class="c-all">
+    <h1>Peppertones - Ready, Get Set, Go!</h1>
+    <h2>
+      <div id="c-head" onclick="pFold()">
+        연습
+      </div>
+    </h2>
+    <br>
+    <div id="c-paragraph">
+      <p>
+        <div><iframe id="c-video" style="width: 560px; height: 315px;" width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxTgck_HPe4?modestbranding=1&rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <br>
+        <button onclick="vWidth()">1.2배 키우기</button>
+      </p>
+      <p>
+        페퍼톤스(Peppertones)는 남성 2인조로 이루어진 밴드다. 해당 곡은 2005년 엘범 "Colorful Express"에 수록되었으며, Deb이 보컬로서 참여한 곡 중 하나다.
+      </p>
+      <p>
+        3분짜리 radio edit와 5분짜리 full version 두 가지 트랙이 있다.
+      </p>
+    </div>
+    <h2></h2>
+  </div>
+  <script type="text/javascript">
+    function pFold() {
+      var p = document.getElementById("c-paragraph");
+      if (p.style.display === "none") {
+        p.style.display = "block";
+      } else {
+        p.style.display = "none";
+      }
+    }
+    function vWidth() {
+      var v = document.getElementById("c-video");
+      if (v.style.width === 560 + 'px') {
+        v.style.width = 560 + 112 + 'px';
+        v.style.height = 315 + 63 + 'px';
+      } else {
+        v.style.width = 560 + 'px';
+        v.style.height = 315 + 'px';
+      }
+    }
+    </script>
+</body>
+
+</html>
