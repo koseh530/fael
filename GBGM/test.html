@@ -4,7 +4,7 @@
 <head>
   <title>Peppertones - Ready, Get Set, Go!</title>
   <style type="text/CSS">
-    h1{
+  h1{
     border-bottom: 1px solid grey;
     padding-bottom: 15px;
   }
@@ -16,11 +16,38 @@
   .c-all{
     padding: 20px;
   }
+  .c-lock{
+    text-align:center;
+    box-sizing: inherit;
+    display: inline-block;
+    background-color: black;
+    color: white;
+    border: 2px solid grey;
+    border-radius: 20px / 20px;
+    padding:20px;
+  }
+  .c-date{
+    font-size: 15px;
+  }
+  .c-time{
+    font-size: 45px;
+  }
+
   </style>
   <meta charset="utf-8">
 </head>
 
 <body>
+  <div class="c-all" style='text-align:center;'>
+    <div class="c-lock">
+      <div id="w-date" class="c-date">
+        20??년?월?일 ???
+      </div>
+      <div id="w-time" class="c-time">
+        00:00:00
+      </div>
+    </div>
+  </div>
   <div class="c-all">
     <h1>Peppertones - Ready, Get Set, Go!</h1>
     <h2>
@@ -31,7 +58,8 @@
     <br>
     <div id="c-paragraph">
       <p>
-        <div><iframe id="c-video" style="width: 560px; height: 315px;" width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxTgck_HPe4?modestbranding=1&rel=0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div><iframe id="c-video" style="width: 560px; height: 315px;" width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxTgck_HPe4?modestbranding=1&rel=0" frameborder="0"
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         <br>
         <button onclick="vWidth()">1.2배 키우기</button>
@@ -54,6 +82,7 @@
         p.style.display = "none";
       }
     }
+
     function vWidth() {
       var v = document.getElementById("c-video");
       if (v.style.width === 560 + 'px') {
@@ -64,6 +93,34 @@
         v.style.height = 315 + 'px';
       }
     }
+  </script>
+  <script type="Text/javascript">
+    var dayTarget = document.getElementById("w-date");
+    var timeTarget = document.getElementById("w-time");
+
+    function tDate() {
+      var vClock = new Date();
+      var yy = vClock.getFullYear();
+      var mm = vClock.getMonth();
+      var dd = vClock.getDate();
+      var dn = ['Sun', 'Mon', 'Tue', 'wed', 'thu', 'fri', 'sat']
+      var dk = dn[vClock.getDay()];
+      dayTarget.innerHTML = `${yy}/${mm+1}/${dd} ${dk}`
+    }
+    function tClock() {
+      var vClock = new Date();
+      var hh = vClock.getHours();
+      var mm = vClock.getMinutes();
+      var ss = vClock.getSeconds();
+      timeTarget.innerHTML = `${hh < 10 ? `0${hh}` : hh}:${mm < 10 ? `0${mm }`  : mm }:${ss < 10 ? `0${ss }`  : ss }`;
+    }
+    function init(){
+      tClock();
+      tDate();
+      setInterval(tClock, 1000);
+      setInterval(tDate, 1000);
+    }
+    init();
     </script>
 </body>
 
