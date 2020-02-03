@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Peppertones - Ready, Get Set, Go!</title>
+  <title>연습장</title>
   <style type="text/CSS">
   h1{
     border-bottom: 1px solid grey;
@@ -23,8 +23,8 @@
     background-color: black;
     color: white;
     border: 2px solid grey;
-    border-radius: 20px / 20px;
-    padding:20px;
+    border-radius: 15px / 15px;
+    padding:30px;
   }
   .c-date{
     font-size: 15px;
@@ -32,7 +32,14 @@
   .c-time{
     font-size: 45px;
   }
-
+  .cw-button{
+    background-color: grey;
+    color: white;
+    border: none;
+    padding: 5px;
+    font-size: 15px;
+    width: 80px;
+  }
   </style>
   <meta charset="utf-8">
 </head>
@@ -47,42 +54,65 @@
         00:00:00
       </div>
     </div>
-  </div>
-  <div class="c-all">
-    <h1>Peppertones - Ready, Get Set, Go!</h1>
-    <h2>
-      <div id="c-head" onclick="pFold()">
-        연습
-      </div>
-    </h2>
-    <br>
-    <div id="c-paragraph">
-      <p>
-        <div><iframe id="c-video" style="width: 560px; height: 315px;" width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxTgck_HPe4?modestbranding=1&rel=0" frameborder="0"
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
+    <div id="c-head">
+      <br>
+      <h1 onclick="pFold()">연습용 초시계</h1>
+      <div id="c-paragraph" style='text-align:center;'>
         <br>
-        <button onclick="vWidth()">1.2배 키우기</button>
-      </p>
-      <p>
-        페퍼톤스(Peppertones)는 남성 2인조로 이루어진 밴드다. 해당 곡은 2005년 엘범 "Colorful Express"에 수록되었으며, Deb이 보컬로서 참여한 곡 중 하나다.
-      </p>
-      <p>
-        3분짜리 radio edit와 5분짜리 full version 두 가지 트랙이 있다.
-      </p>
+        <div class="c-lock">
+          <div id="w-stw" class="c-time">
+            00:00.00
+          </div>
+          <div style='padding:10px;'></div>
+          <div>
+            <button id="b-lap" class="cw-button" style="display: none;" onclick="tLap()">기록</button>
+            <button id="b-reset" class="cw-button" style="display: inline-block;" onclick="tReset()">초기화</button>
+            <button id="b-resume" class="cw-button" style="display: inline-block;" onclick="tResume()">재생</button>
+            <button id="b-pause" class="cw-button" style="display: none;" onclick="tPause()">중지</button>
+          </div>
+        </div>
+        <p>
+          <div id="w-lap" style='font-size:20px'>
+          </div>
+        </p>
+      </div>
+      <!--
+  <h2>
+    <div id="c-head" onclick="pFold()">
+      Peppertones - Ready, Get set, Go!
     </div>
-    <h2></h2>
+  </h2>
+  <br>
+  <div id="c-paragraph">
+    <p>
+      <div><iframe id="c-video" style="width: 560px; height: 315px;" width="560" height="315" src="https://www.youtube-nocookie.com/embed/BxTgck_HPe4?modestbranding=1&rel=0" frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <br>
+      <button onclick="vWidth()">1.2배 키우기</button>
+    </p>
+    <p>
+      페퍼톤스(Peppertones)는 남성 2인조로 이루어진 밴드다. 해당 곡은 2005년 엘범 "Colorful Express"에 수록되었으며, Deb이 보컬로서 참여한 곡 중 하나다.
+    </p>
+    <p>
+      3분짜리 radio edit와 5분짜리 full version 두 가지 트랙이 있다.
+    </p>
   </div>
-  <script type="text/javascript">
-    function pFold() {
-      var p = document.getElementById("c-paragraph");
-      if (p.style.display === "none") {
-        p.style.display = "block";
-      } else {
-        p.style.display = "none";
+  <h2></h2>
+  -->
+    </div>
+    <script type="text/javascript"> <!-- 접기 -->
+      function pFold() {
+        var p = document.getElementById("c-paragraph");
+        if (p.style.display === "none") {
+          p.style.display = "block";
+        } else {
+          p.style.display = "none";
+        }
       }
-    }
-
+    </script>
+    <!--
+    <script type="text/javascript">
     function vWidth() {
       var v = document.getElementById("c-video");
       if (v.style.width === 560 + 'px') {
@@ -94,33 +124,76 @@
       }
     }
   </script>
-  <script type="Text/javascript">
-    var dayTarget = document.getElementById("w-date");
-    var timeTarget = document.getElementById("w-time");
-
-    function tDate() {
-      var vClock = new Date();
-      var yy = vClock.getFullYear();
-      var mm = vClock.getMonth();
-      var dd = vClock.getDate();
-      var dn = ['Sun', 'Mon', 'Tue', 'wed', 'thu', 'fri', 'sat']
-      var dk = dn[vClock.getDay()];
-      dayTarget.innerHTML = `${yy}/${mm+1}/${dd} ${dk}`
-    }
-    function tClock() {
-      var vClock = new Date();
-      var hh = vClock.getHours();
-      var mm = vClock.getMinutes();
-      var ss = vClock.getSeconds();
-      timeTarget.innerHTML = `${hh < 10 ? `0${hh}` : hh}:${mm < 10 ? `0${mm }`  : mm }:${ss < 10 ? `0${ss }`  : ss }`;
-    }
-    function init(){
-      tClock();
-      tDate();
-      setInterval(tClock, 1000);
-      setInterval(tDate, 1000);
-    }
-    init();
+  -->
+    <script type="Text/javascript"> <!-- 현재 시각 -->
+      var dayTarget = document.getElementById("w-date");
+      var timeTarget = document.getElementById("w-time");
+      function tDate() {
+        var vClock = new Date();
+        var yy = vClock.getFullYear();
+        var mm = vClock.getMonth();
+        var dd = vClock.getDate();
+        var dn = ['Sun', 'Mon', 'Tue', 'wed', 'thu', 'fri', 'sat']
+        var dk = dn[vClock.getDay()];
+        dayTarget.innerHTML = `${yy}/${mm+1}/${dd} ${dk}`
+      }
+      function tClock() {
+        var vClock = new Date();
+        var hh = vClock.getHours();
+        var mm = vClock.getMinutes();
+        var ss = vClock.getSeconds();
+        timeTarget.innerHTML = `${hh < 10 ? `0${hh}` : hh}:${mm < 10 ? `0${mm }`  : mm }:${ss < 10 ? `0${ss }`  : ss }`;
+      }
+      function init(){
+        tClock();
+        tDate();
+        setInterval(tClock, 1000);
+        setInterval(tDate, 1000);
+      }
+      init();
+    </script>
+    <script type="Text/javascript">
+      var ms = 0;
+      var flag = 0;
+      var lcount = 0;
+      function increment(){
+        if (flag === 1){
+          ms++;
+          var mins = Math.floor(ms/100/60);
+          var secs = Math.floor(ms/100)%60;
+          var mss = ms%100;
+          document.getElementById("w-stw").innerHTML = `${mins < 10 ? `0${mins}` : mins}:${secs < 10 ? `0${secs }`  : secs }.${mss < 10 ? `0${mss }`  : mss }`;
+        }
+      }
+      function tLap(){
+        lcount++;
+        document.getElementById("w-lap").innerHTML += lcount + '. <span class="c-lap">' + document.getElementById("w-stw").innerHTML + '</span><br>';
+      }
+      function tReset(){
+        ms = 0;
+        lcount = 0;
+        document.getElementById("w-stw").innerHTML = "00:00.00";
+        document.getElementById("w-lap").innerHTML = "";
+      }
+      function tResume(){
+          flag = 1;
+          document.getElementById("b-lap").style.display = "inline-block";
+          document.getElementById("b-reset").style.display = "none";
+          document.getElementById("b-resume").style.display = "none";
+          document.getElementById("b-pause").style.display = "inline-block";
+      }
+      function tPause(){
+          flag = 0;
+          document.getElementById("b-lap").style.display = "none";
+          document.getElementById("b-reset").style.display = "inline-block";
+          document.getElementById("b-resume").style.display = "inline-block";
+          document.getElementById("b-pause").style.display = "none";
+      }
+      function init(){
+          increment();
+          setInterval(increment, 10);
+      }
+      init();
     </script>
 </body>
 
