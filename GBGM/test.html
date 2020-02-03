@@ -167,13 +167,19 @@
       }
       function tLap(){
         lcount++;
-        document.getElementById("w-lap").innerHTML += lcount + '. <span class="c-lap">' + document.getElementById("w-stw").innerHTML + '</span><br>';
+        var node = document.createElement("div");
+        var textnode = document.createTextNode(lcount + '. ' + document.getElementById("w-stw").innerHTML);
+        node.appendChild(textnode);
+        document.getElementById("w-lap").appendChild(node);
       }
       function tReset(){
         ms = 0;
         lcount = 0;
+        var laps = document.getElementById("w-lap");
+        while(laps.hasChildNodes()){
+          laps.removeChild(laps.firstChild);
+        }
         document.getElementById("w-stw").innerHTML = "00:00.00";
-        document.getElementById("w-lap").innerHTML = "";
       }
       function tResume(){
           flag = 1;
