@@ -22,7 +22,6 @@
     display: inline-block;
     background-color: black;
     color: white;
-    border: 2px solid grey;
     border-radius: 15px / 15px;
     padding: 30px;
   }
@@ -41,6 +40,15 @@
     padding: 5px;
     font-size: 15px;
     width: 80px;
+  }
+  .cw-lap-button{
+    align: center;
+    border: none;
+    background-color: black;
+    border-radius: 5px / 5px;
+    color: white;
+    font-size: 16px;
+    font-family: 'arial';
   }
   </style>
   <meta charset="utf-8">
@@ -154,7 +162,7 @@
       }
       init();
     </script>
-        <script type="Text/javascript">
+    <script type="Text/javascript">
       var offset = 0;
       var tms = 0;
       var ntime = 0;
@@ -172,9 +180,11 @@
       function tLap(){
         lcount++;
         var node = document.createElement("div");
-        var textnode = document.createTextNode(lcount + '. ' + document.getElementById("w-stw").innerHTML);
-        node.appendChild(textnode);
+        node.innerHTML = '<b>' + lcount + '</b>. ' + document.getElementById("w-stw").innerHTML + ' <button class="cw-lap-button" onclick="tDellap(this)">X</button>'
         document.getElementById("w-lap").appendChild(node);
+      }
+      function tDellap(e){
+        e.parentNode.remove();
       }
       function tReset(){
         offset = 0;
