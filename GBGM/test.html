@@ -162,7 +162,8 @@
       var lcount = 0;
       function increment(){
         if(flag === 1){
-          tms = new Date().ntime.getTime() - offset.getTime();
+          ntime = new Date();
+          tms = ntime.getTime() - offset.getTime();
           var mins = Math.floor(tms/1000/60);
           var secs = Math.floor(tms/1000)%60;
           var mss = Math.floor(tms/10%100);
