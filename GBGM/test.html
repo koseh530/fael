@@ -154,21 +154,20 @@
       }
       init();
     </script>
-    <script type="Text/javascript">
+        <script type="Text/javascript">
       var offset = 0;
       var tms = 0;
       var ntime = 0;
-      var flag = 0;
+      var stime = 0;
+      var flag;
       var lcount = 0;
       function increment(){
-        if(flag === 1){
           ntime = new Date();
-          tms = ntime.getTime() - offset.getTime();
+          tms = ntime.getTime() - offset;
           var mins = Math.floor(tms/1000/60);
           var secs = Math.floor(tms/1000)%60;
           var mss = Math.floor(tms/10%100);
           document.getElementById("w-stw").innerHTML = `${mins < 10 ? `0${mins}` : mins}:${secs < 10 ? `0${secs }`  : secs }.${mss < 10 ? `0${mss }`  : mss }`;
-        }
       }
       function tLap(){
         lcount++;
@@ -178,9 +177,10 @@
         document.getElementById("w-lap").appendChild(node);
       }
       function tReset(){
-        tms = 0;
-        lcount = 0;
         offset = 0;
+        tms = 0;
+        ntime = 0;
+        lcount = 0;
         var laps = document.getElementById("w-lap");
         while(laps.hasChildNodes()){
           laps.removeChild(laps.firstChild);
@@ -188,24 +188,25 @@
         document.getElementById("w-stw").innerHTML = "00:00.00";
       }
       function tResume(){
-        flag = 1;
         document.getElementById("b-lap").style.display = "inline-block";
         document.getElementById("b-reset").style.display = "none";
         document.getElementById("b-resume").style.display = "none";
         document.getElementById("b-pause").style.display = "inline-block";
         if(offset === 0){
-          offset = new Date();
+          offset = new Date().getTime();
         }
-        setInterval(increment, 10);
+        else {
+          offset += new Date().getTime() - stime;
+        }
+        flag = setInterval(increment, 10);
       }
       function tPause(){
-        flag = 0;
         document.getElementById("b-lap").style.display = "none";
         document.getElementById("b-reset").style.display = "inline-block";
         document.getElementById("b-resume").style.display = "inline-block";
         document.getElementById("b-pause").style.display = "none";
-        ntime = tms;
-        clearInterval(increment);
+        stime = new Date().getTime();
+        clearInterval(flag);
       }
     </script>
 </body>
