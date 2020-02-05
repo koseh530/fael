@@ -193,6 +193,7 @@
         tms = 0;
         ntime = 0;
         lcount = 0;
+        stime = 0;
         var laps = document.getElementById("w-lap");
         while(laps.hasChildNodes()){
           laps.removeChild(laps.firstChild);
@@ -204,12 +205,7 @@
         document.getElementById("b-reset").style.display = "none";
         document.getElementById("b-resume").style.display = "none";
         document.getElementById("b-pause").style.display = "inline-block";
-        if(offset === 0){
-          offset = new Date().getTime();
-        }
-        else {
-          offset += new Date().getTime() - stime;
-        }
+        offset += new Date().getTime() - stime;
         flag = setInterval(increment, 10);
       }
       function tPause(){
