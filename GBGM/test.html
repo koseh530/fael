@@ -84,8 +84,7 @@
           </div>
         </div>
         <p>
-          <div id="w-lap" style='font-size:20px'>
-          </div>
+          <div id="w-lap" style='font-size:20px'></div>
         </p>
       </div>
       <!--
@@ -166,34 +165,39 @@
     </script>
     <script type="Text/javascript">
       var offset = 0;
-      var tms = 0;
-      var ntime = 0;
       var stime = 0;
-      var flag;
       var lcount = 0;
+      var flag;
       function increment(){
-          ntime = new Date();
-          tms = ntime.getTime() - offset;
+          var ntime = new Date();
+          var tms = ntime.getTime() - offset;
           var mins = Math.floor(tms/1000/60);
           var secs = Math.floor(tms/1000)%60;
           var mss = Math.floor(tms/10%100);
           document.getElementById("w-stw").innerHTML = `${mins < 10 ? `0${mins}` : mins}:${secs < 10 ? `0${secs }`  : secs }.${mss < 10 ? `0${mss }`  : mss }`;
       }
       function tLap(){
+        var nodec = document.createElement("div");
+        var nodep = document.getElementById("w-lap");
         lcount++;
-        var node = document.createElement("div");
-        node.innerHTML = '<b>' + lcount + '</b>. ' + document.getElementById("w-stw").innerHTML + ' <button class="cw-lap-button" onclick="tDellap(this)">X</button>'
-        document.getElementById("w-lap").appendChild(node);
+        nodec.innerHTML = '<b>' + lcount + '</b>. ' + document.getElementById("w-stw").innerHTML + ' <button class="cw-lap-button" onclick="tDellap(this)">X</button>'
+        nodep.appendChild(nodec);
+        console.log(nodep.childNodes[lcount-1].childNodes[0].innerText);
       }
       function tDellap(e){
-        e.parentNode.remove();
+        var pl = e.parentNode.parentNode;
+        var indexl = e.parentNode.childNodes[0].innerText;
+        console.log(pl.childNodes[indexl-1].childNodes[0].innerText);
+        for(i=indexl-1; i<lcount; i++){
+          pl.childNodes[i].childNodes[0].innerText--;
+        }
+        pl.removeChild(pl.childNodes[indexl-1]);
+        lcount--;
       }
       function tReset(){
         offset = 0;
-        tms = 0;
-        ntime = 0;
-        lcount = 0;
         stime = 0;
+        lcount = 0;
         var laps = document.getElementById("w-lap");
         while(laps.hasChildNodes()){
           laps.removeChild(laps.firstChild);
