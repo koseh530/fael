@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>별 그림 - 연습장</title>
+  <link rel="icon" href="icon2h.png">
+  <style type="text/CSS">
+  h1{
+    border-bottom: 1px solid grey;
+    padding-bottom: 15px;
+  }
+  h2{
+    border-bottom: 1px solid grey;
+    padding-bottom: 15px;
+    margin-top: 50px;
+  }
+  .c-all{
+    padding: 20px;
+  }
+  .cw-button{
+    background-color: black;
+    color: yellow;
+    border: none;
+    padding: 5px;
+    font-size: 15px;
+    width: 80px;
+    margin-left: 5px;
+  }
+  .cw-lap-button{
+    align: center;
+    border: none;
+    background-color: blue;
+    border-radius: 5px / 5px;
+    color: white;
+    font-size: 16px;
+    font-family: 'arial';
+    margin-bottom: 10px;
+    padding: 5px;
+  }
+  </style>
+</head>
+
+<body>
+  <div class="c-all">
+    <div><button class="cw-lap-button" onclick="pOut()">원시자료형 확인 (콘솔)</button>  배열에는 [null, (빈칸), 7!=8, 0804+8, "Hello "+"World!"](이)가 있음</div><!--콘솔로 확인-->
+    <div><button class="cw-button" onclick="sGet()">생성</button><button class="cw-button" onclick="sDel()">제거</button></div>
+    <br><div id="s-mountain"></div>
+  </div>
+  <script type="text/javascript">
+    let sm = document.getElementById("s-mountain");
+    let sc = 0
+    function pOut(){
+      let pt = [null, ,7!==8,0804+8,"Hello "+"world!"]
+      for(let i in pt){
+        console.log(typeof pt[i]); // Null은 object타입인 것으로 확인, for in문에는 undefined가 출력되지 않음
+      }
+    }
+    function sGet(){
+      let sf = document.createElement("div");
+      let count = 0;
+      sc++;
+      do {
+        sf.innerText += '*'
+        count++;
+      } while(count<sc);
+      sm.appendChild(sf);
+    }
+    function sDel(){
+      if(sc!==0){
+        sc--;
+        sm.removeChild(sm.lastChild);
+      }
+    }
+  </script>
+
+</body>
+</html>
