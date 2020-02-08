@@ -3,6 +3,7 @@
 
 <head>
   <title>연습장</title>
+  <meta charset="utf-8">
   <link rel="icon" href="icon2h.png">
   <style type="text/CSS">
   h1{
@@ -53,14 +54,14 @@
     font-family: 'arial';
   }
   </style>
-  <meta charset="utf-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 </head>
 
 <body>
   <div class="c-all" style='text-align:center;'>
     <div class="c-lock">
       <div id="w-date" class="c-date">
-        20??년?월?일 ???
+        20??/??/??/???
       </div>
       <div id="w-time" class="c-time">
         00:00:00
@@ -68,7 +69,7 @@
     </div>
     <div id="c-head">
       <br>
-      <h1 onclick="pFold()">연습용 초시계</h1>
+      <h1>연습용 초시계</h1>
       <div id="c-paragraph" style='text-align:center;'>
         <br>
         <div class="c-lock">
@@ -77,10 +78,10 @@
           </div>
           <div style='padding:10px;'></div>
           <div>
-            <button id="b-lap" class="cw-button" style="display: none;" onclick="tLap()">기록</button>
-            <button id="b-reset" class="cw-button" style="display: inline-block;" onclick="tReset()">초기화</button>
-            <button id="b-resume" class="cw-button" style="display: inline-block;" onclick="tResume()">재생</button>
-            <button id="b-pause" class="cw-button" style="display: none;" onclick="tPause()">중지</button>
+            <button id="b-lap" class="cw-button" style="display: none;">기록</button>
+            <button id="b-reset" class="cw-button" style="display: inline-block;">초기화</button>
+            <button id="b-resume" class="cw-button" style="display: inline-block;">재생</button>
+            <button id="b-pause" class="cw-button" style="display: none;">중지</button>
           </div>
         </div>
         <p>
@@ -112,115 +113,102 @@
   <h2></h2>
   -->
     </div>
-    <script type="text/javascript"> <!-- 접기 -->
-      function pFold() {
-        var p = document.getElementById("c-paragraph");
-        if (p.style.display === "none") {
-          p.style.display = "block";
-        } else {
-          p.style.display = "none";
-        }
-      }
-    </script>
-    <!--
-    <script type="text/javascript">
-    function vWidth() {
-      var v = document.getElementById("c-video");
-      if (v.style.width === 560 + 'px') {
-        v.style.width = 560 + 112 + 'px';
-        v.style.height = 315 + 63 + 'px';
-      } else {
-        v.style.width = 560 + 'px';
-        v.style.height = 315 + 'px';
-      }
+  </div>
+
+  <!--
+  <script type="text/javascript">
+  function vWidth() {
+    var v = document.getElementById("c-video");
+    if (v.style.width === 560 + 'px') {
+      v.style.width = 560 + 112 + 'px';
+      v.style.height = 315 + 63 + 'px';
+    } else {
+      v.style.width = 560 + 'px';
+      v.style.height = 315 + 'px';
     }
+  }
+</script>
+-->
+  <script type="Text/javascript"> <!-- 접기 -->
+  $(document).ready(function(){
+    $("h1").click(function(){
+      let p = $("#c-paragraph");
+      if(p.is(":visible")){
+        p.hide();
+      }
+      else{
+        p.show();
+      }
+    });
+  });
   </script>
-  -->
-    <script type="Text/javascript"> <!-- 현재 시각 -->
-      var dayTarget = document.getElementById("w-date");
-      var timeTarget = document.getElementById("w-time");
-      function tDate() {
-        var vClock = new Date();
-        var yy = vClock.getFullYear();
-        var mm = vClock.getMonth();
-        var dd = vClock.getDate();
-        var dn = ['Sun', 'Mon', 'Tue', 'wed', 'thu', 'fri', 'sat']
-        var dk = dn[vClock.getDay()];
-        dayTarget.innerHTML = `${yy}/${mm+1}/${dd} ${dk}`
+  <script type="Text/javascript"> <!-- 현재 시각 -->
+    $(document).ready(function(){
+      tClock();
+      setInterval(tClock, 1000);
+      function tClock(){ // function setInterval(function(){...}, 1000)의 형태를 사용하면 바로 갱신되지 않는 문제
+        let vClock = new Date();
+        let yy = vClock.getFullYear();
+        let mt = vClock.getMonth();
+        let dd = vClock.getDate();
+        let dn = ['Sun', 'Mon', 'Tue', 'Wed', 'Yhu', 'Fri', 'Sat']
+        let dk = dn[vClock.getDay()];
+        let hh = vClock.getHours();
+        let mm = vClock.getMinutes();
+        let ss = vClock.getSeconds();
+        $("#w-date").html(yy + "/" + mt + "/" + dd + "/" + dk);
+        $("#w-time").html((hh < 10 ? "0" : "" ) + hh + ":" + (mm < 10 ? "0" : "") + mm + ":" + (ss < 10 ? "0" : "") + ss);
       }
-      function tClock() {
-        var vClock = new Date();
-        var hh = vClock.getHours();
-        var mm = vClock.getMinutes();
-        var ss = vClock.getSeconds();
-        timeTarget.innerHTML = `${hh < 10 ? `0${hh}` : hh}:${mm < 10 ? `0${mm }`  : mm }:${ss < 10 ? `0${ss }`  : ss }`;
-      }
-      function init(){
-        tClock();
-        tDate();
-        setInterval(tClock, 1000);
-        setInterval(tDate, 1000);
-      }
-      init();
-    </script>
-    <script type="Text/javascript">
-      var offset = 0;
-      var stime = 0;
-      var lcount = 0;
-      var flag;
-      function increment(){
-          var ntime = new Date();
-          var tms = ntime.getTime() - offset;
-          var mins = Math.floor(tms/1000/60);
-          var secs = Math.floor(tms/1000)%60;
-          var mss = Math.floor(tms/10%100);
-          document.getElementById("w-stw").innerHTML = `${mins < 10 ? `0${mins}` : mins}:${secs < 10 ? `0${secs }`  : secs }.${mss < 10 ? `0${mss }`  : mss }`;
-      }
-      function tLap(){
-        var nodec = document.createElement("div");
-        var nodep = document.getElementById("w-lap");
+    });
+  </script>
+  <script type="Text/javascript">
+    $(document).ready(function(){
+      let offset = 0;
+      let stime = 0;
+      let lcount = 0;
+      let flag;
+      $("#b-lap").click(function(){
         lcount++;
-        nodec.innerHTML = '<b>' + lcount + '</b>. ' + document.getElementById("w-stw").innerHTML + ' <button class="cw-lap-button" onclick="tDellap(this)">X</button>'
-        nodep.appendChild(nodec);
-        console.log(nodep.childNodes[lcount-1].childNodes[0].innerText);
-      }
-      function tDellap(e){
-        var pl = e.parentNode.parentNode;
-        var indexl = e.parentNode.childNodes[0].innerText;
-        console.log(pl.childNodes[indexl-1].childNodes[0].innerText);
-        for(i=indexl-1; i<lcount; i++){
-          pl.childNodes[i].childNodes[0].innerText--;
+        $("#w-lap").append('<div><b>' + lcount + '</b>. ' + $("#w-stw").text() + ' <button class="cw-lap-button">X</button></div>');
+      })
+      $("#w-lap").on("click", ".cw-lap-button", function(){
+        $(this).parent().remove();
+        for(let i=0; i<$("#w-lap").children().length; i++){
+          $("#w-lap").children().eq(i).children("b").html(i+1);
         }
-        pl.removeChild(pl.childNodes[indexl-1]);
         lcount--;
-      }
-      function tReset(){
+      });
+      $("#b-reset").click(function(){
         offset = 0;
         stime = 0;
         lcount = 0;
-        var laps = document.getElementById("w-lap");
-        while(laps.hasChildNodes()){
-          laps.removeChild(laps.firstChild);
-        }
-        document.getElementById("w-stw").innerHTML = "00:00.00";
-      }
-      function tResume(){
-        document.getElementById("b-lap").style.display = "inline-block";
-        document.getElementById("b-reset").style.display = "none";
-        document.getElementById("b-resume").style.display = "none";
-        document.getElementById("b-pause").style.display = "inline-block";
+        $("#w-lap").empty();
+        $("#w-stw").html("00:00.00");
+      });
+      $("#b-resume").click(function(){
+        $("#b-lap").show();
+        $("#b-reset").hide();
+        $("#b-resume").hide();
+        $("#b-pause").show();
         offset += new Date().getTime() - stime;
-        flag = setInterval(increment, 10);
-      }
-      function tPause(){
-        document.getElementById("b-lap").style.display = "none";
-        document.getElementById("b-reset").style.display = "inline-block";
-        document.getElementById("b-resume").style.display = "inline-block";
-        document.getElementById("b-pause").style.display = "none";
+        flag = setInterval(function(){
+          let ntime = new Date();
+          let tms = ntime.getTime() - offset;
+          let mins = Math.floor(tms/1000/60);
+          let secs = Math.floor(tms/1000)%60;
+          let mss = Math.floor(tms/10%100);
+          $("#w-stw").html((mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs + ":" + (mss < 10 ? "0" : "") + mss);
+        }, 10);
+      });
+      $("#b-pause").click(function(){
+        $("#b-lap").hide();
+        $("#b-reset").show();
+        $("#b-resume").show();
+        $("#b-pause").hide();
         stime = new Date().getTime();
         clearInterval(flag);
-      }
-    </script>
-</body>
+      });
+    });
+  </script>
 
-</html>
+</body></html>
