@@ -54,7 +54,7 @@
     font-family: 'arial';
   }
   </style>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
 </head>
 
 <body>
@@ -130,85 +130,88 @@
 </script>
 -->
   <script type="Text/javascript"> <!-- 접기 -->
-  $(document).ready(function(){
-    $("h1").click(function(){
-      let p = $("#c-paragraph");
-      if(p.is(":visible")){
-        p.hide();
+    document.querySelector("h1").addEventListener("click", function(){
+      let p = document.querySelector("#c-paragraph");
+      if(p.style.display === "none"){
+        p.style.display = "";
       }
       else{
-        p.show();
+        p.style.display = "none";
       }
-    });
-  });
+    }, false);
   </script>
   <script type="Text/javascript"> <!-- 현재 시각 -->
-    $(document).ready(function(){
-      tClock();
-      setInterval(tClock, 1000);
-      function tClock(){ // function setInterval(function(){...}, 1000)의 형태를 사용하면 바로 갱신되지 않는 문제
-        let vClock = new Date();
-        let yy = vClock.getFullYear();
-        let mt = vClock.getMonth();
-        let dd = vClock.getDate();
-        let dn = ['Sun', 'Mon', 'Tue', 'Wed', 'Yhu', 'Fri', 'Sat']
-        let dk = dn[vClock.getDay()];
-        let hh = vClock.getHours();
-        let mm = vClock.getMinutes();
-        let ss = vClock.getSeconds();
-        $("#w-date").html(yy + "/" + mt + "/" + dd + "/" + dk);
-        $("#w-time").html((hh < 10 ? "0" : "" ) + hh + ":" + (mm < 10 ? "0" : "") + mm + ":" + (ss < 10 ? "0" : "") + ss);
-      }
-    });
+    function tClock(){
+      let vClock = new Date();
+      let yy = vClock.getFullYear();
+      let mt = vClock.getMonth();
+      let dd = vClock.getDate();
+      let dn = ['Sun', 'Mon', 'Tue', 'Wed', 'Yhu', 'Fri', 'Sat']
+      let dk = dn[vClock.getDay()];
+      let hh = vClock.getHours();
+      let mm = vClock.getMinutes();
+      let ss = vClock.getSeconds();
+      document.querySelector("#w-date").innerHTML = (yy + "/" + mt + "/" + dd + "/" + dk);
+      document.querySelector("#w-time").innerHTML = ((hh < 10 ? "0" : "" ) + hh + ":" + (mm < 10 ? "0" : "") + mm + ":" + (ss < 10 ? "0" : "") + ss);
+    }
+    tClock();
+    setInterval(tClock, 1000);
   </script>
-  <script type="Text/javascript">
-    $(document).ready(function(){
-      let offset = 0;
-      let stime = 0;
-      let lcount = 0;
-      let flag;
-      $("#b-lap").click(function(){
-        lcount++;
-        $("#w-lap").append('<div><b>' + lcount + '</b>. ' + $("#w-stw").text() + ' <button class="cw-lap-button">X</button></div>');
-      })
-      $("#w-lap").on("click", ".cw-lap-button", function(){
-        $(this).parent().remove();
-        for(let i=0; i<$("#w-lap").children().length; i++){
-          $("#w-lap").children().eq(i).children("b").html(i+1);
-        }
-        lcount--;
-      });
-      $("#b-reset").click(function(){
-        offset = 0;
-        stime = 0;
-        lcount = 0;
-        $("#w-lap").empty();
-        $("#w-stw").html("00:00.00");
-      });
-      $("#b-resume").click(function(){
-        $("#b-lap").show();
-        $("#b-reset").hide();
-        $("#b-resume").hide();
-        $("#b-pause").show();
-        offset += new Date().getTime() - stime;
-        flag = setInterval(function(){
-          let ntime = new Date();
-          let tms = ntime.getTime() - offset;
-          let mins = Math.floor(tms/1000/60);
-          let secs = Math.floor(tms/1000)%60;
-          let mss = Math.floor(tms/10%100);
-          $("#w-stw").html((mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs + ":" + (mss < 10 ? "0" : "") + mss);
-        }, 10);
-      });
-      $("#b-pause").click(function(){
-        $("#b-lap").hide();
-        $("#b-reset").show();
-        $("#b-resume").show();
-        $("#b-pause").hide();
-        stime = new Date().getTime();
-        clearInterval(flag);
-      });
-    });
-  </script>
+  <script type="Text/javascript"> <!-- 초시계 -->
+    let offset = 0;
+    let stime = 0;
+    let lcount = 0;
+    let flag;
 
+    document.querySelector("#b-lap").addEventListener("click", function(){
+      lcount++;
+      document.querySelector("#w-lap").innerHTML += ('<div><b>' + lcount + '</b>. ' + document.querySelector("#w-stw").innerText + ' <button class="cw-lap-button">X</button></div>');
+      let lbtns = document.querySelectorAll("#w-lap button");
+        for(let i=0; i<lbtns.length; i++){ // 이 반복문을 없애면 마지막 버튼만 동작함
+          lbtns[i].addEventListener("click", function(){
+            let ldiv = document.querySelectorAll("#w-lap div");
+            ldiv[lcount-1].remove(); // lcount-1 대신 i를 사용하면 lap 1개남을 때에 에러가 발생하면서 미작동함
+            let lnums = document.querySelectorAll("#w-lap b");
+            for(let j=0; j<lnums.length; j++){
+              lnums[j].innerText = j+1;
+          }
+          lcount--;
+        }, false);
+      }
+    }, false);
+
+    document.querySelector("#b-reset").addEventListener("click", function(){
+      offset = 0;
+      stime = 0;
+      lcount = 0;
+      document.querySelector("#w-lap").innerHTML = "";
+      document.querySelector("#w-stw").innerHTML = "00:00.00";
+    }, false);
+
+    document.querySelector("#b-resume").addEventListener("click", function(){
+      document.querySelector("#b-lap").style.display = "inline-block";
+      document.querySelector("#b-reset").style.display = "none";
+      document.querySelector("#b-resume").style.display = "none";
+      document.querySelector("#b-pause").style.display = "inline-block";
+      offset += new Date().getTime() - stime;
+      flag = setInterval(function(){
+        let ntime = new Date();
+        let tms = ntime.getTime() - offset;
+        let mins = Math.floor(tms/1000/60);
+        let secs = Math.floor(tms/1000)%60;
+        let mss = Math.floor(tms/10%100);
+        document.querySelector("#w-stw").innerHTML = ((mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs + ":" + (mss < 10 ? "0" : "") + mss);
+      }, 10);
+    }, false);
+
+    document.querySelector("#b-pause").addEventListener("click", function(){
+      document.querySelector("#b-lap").style.display = "none";
+      document.querySelector("#b-reset").style.display = "inline-block";
+      document.querySelector("#b-resume").style.display = "inline-block";
+      document.querySelector("#b-pause").style.display = "none";
+      stime = new Date().getTime();
+      clearInterval(flag);
+    }, false);
+
+  </script>
 </body></html>
