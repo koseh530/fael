@@ -177,10 +177,10 @@
         lbtns[i].addEventListener("click", function(){
           let ldiv = llist.querySelectorAll("div");
           let lspan = llist.querySelectorAll("span");
-          let lnums = llist.querySelectorAll("b");
+          //let lnums = llist.querySelectorAll("b");
           for(let j=i; j<ldiv.length-1; j++){
             lspan[j].innerHTML = lspan[j+1].innerHTML;
-            lnums[j*3].innerText = j+1;
+            //lnums[j*3].innerText = j+1;
           }
           ldiv[ldiv.length-1].remove();
           lcount--;
