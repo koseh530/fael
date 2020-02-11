@@ -165,20 +165,44 @@
 
     document.querySelector("#b-lap").addEventListener("click", function(){
       lcount++;
-      document.querySelector("#w-lap").innerHTML += ('<div><b>' + lcount + '</b>. ' + document.querySelector("#w-stw").innerText + ' <button class="cw-lap-button">X</button></div>');
-      let lbtns = document.querySelectorAll("#w-lap button");
-        for(let i=0; i<lbtns.length; i++){ // 이 반복문을 없애면 마지막 버튼만 동작함
-          lbtns[i].addEventListener("click", function(){
-            let ldiv = document.querySelectorAll("#w-lap div");
-            ldiv[lcount-1].remove(); // lcount-1 대신 i를 사용하면 lap 1개남을 때에 에러가 발생하면서 미작동함
-            let lnums = document.querySelectorAll("#w-lap b");
-            for(let j=0; j<lnums.length; j++){
-              lnums[j].innerText = j+1;
+      let lstw = document.querySelector("#w-stw").innerText;
+      document.querySelector("#w-lap").innerHTML += ('<div><b>' + lcount + '</b>. <span>' + lstw.substr(0,2) + "<b>:</b>" + lstw.substr(3,2) + "<b>.</b>" + lstw.substr(6,2) + ' </span><button class="cw-lap-button">X</button></div>');
+      btnSort();
+    }, false);
+
+    function btnSort(){
+      let llist = document.querySelector("#w-lap");
+      let lbtns = llist.querySelectorAll("button");
+      for(let i=0; i<lbtns.length; i++){
+        lbtns[i].addEventListener("click", function(){
+          let ldiv = llist.querySelectorAll("div");
+          let lspan = llist.querySelectorAll("span");
+          let lnums = llist.querySelectorAll("b");
+          for(let j=i; j<ldiv.length-1; j++){
+            lspan[j].innerHTML = lspan[j+1].innerHTML;
+            lnums[j*3].innerText = j+1;
           }
+          ldiv[ldiv.length-1].remove();
           lcount--;
         }, false);
       }
-    }, false);
+    }
+      /*
+      let lbtns = document.querySelectorAll("#w-lap button");
+          for(let i=0; i<lbtns.length; i++){
+            lbtns[i].addEventListener("click", function(){
+              let ldiv = document.querySelectorAll("#w-lap div");
+              ldiv[i].remove();
+              let lnums = document.querySelectorAll("#w-lap b");
+              for(let j=0; j<lnums.length; j++){
+                lnums[j].innerText = j+1;
+            }
+            lcount--;
+          }, false);
+        }
+      }, false);
+      */
+
 
     document.querySelector("#b-reset").addEventListener("click", function(){
       offset = 0;
@@ -200,7 +224,7 @@
         let mins = Math.floor(tms/1000/60);
         let secs = Math.floor(tms/1000)%60;
         let mss = Math.floor(tms/10%100);
-        document.querySelector("#w-stw").innerHTML = ((mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs + ":" + (mss < 10 ? "0" : "") + mss);
+        document.querySelector("#w-stw").innerHTML = ((mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs + "." + (mss < 10 ? "0" : "") + mss);
       }, 10);
     }, false);
 
