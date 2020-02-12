@@ -149,7 +149,7 @@
   <h2></h2>
 </div>
   <script type="text/javascript"> <!-- 숨기기 -->
-    ca = document.querySelector(".c-all");
+    let ca = document.querySelector(".c-all");
     function pFold(head) {
       let p = head.parentNode.nextSibling.nextSibling;
       console.log(p);
@@ -159,7 +159,7 @@
         p.style.display = "none";
       }
     }
-    ha = ca.querySelectorAll(".c-head");
+    const ha = ca.querySelectorAll(".c-head");
     for(const hac of ha){
       hac.addEventListener("click", function(){
         pFold(hac);
