@@ -162,11 +162,11 @@
     if(nowt == null){
       nowt = "00:00.00";
     }
-    let offset = localStorage.getItem('offset');
+    let offset = Number(localStorage.getItem('offset')); // 방금 고침
     if(offset == null){
       offset = 0;
     }
-    let stime = localStorage.getItem('stime');
+    let stime = Number(localStorage.getItem('stime'));
     if(stime == null){
       stime = 0;
     }
@@ -174,7 +174,7 @@
     if(lcount == null){
       lcount = 0;
     }
-    let flag = localStorage.getItem('flag');
+    let flag = Number(localStorage.getItem('flag'));
     if(flag == null){
       flag = 0;
     }
