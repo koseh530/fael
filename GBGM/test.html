@@ -159,8 +159,8 @@
   </script>
   <script type="Text/javascript"> // 초시계
     let nowt = localStorage.getItem('nowt');
-    if(nowt == null){
-      nowt = "00:00.00";
+    if(nowt != null){
+      document.querySelector("#w-stw").innerHTML = nowt;
     }
     let offset = Number(localStorage.getItem('offset')); // 방금 고침
     if(offset == null){
