@@ -129,7 +129,7 @@
   }
 </script>
 -->
-  <script type="Text/javascript"> <!-- 접기 -->
+  <script type="Text/javascript"> // 접기
     document.querySelector("h1").addEventListener("click", function(){
       let p = document.querySelector("#c-paragraph");
       if(p.style.display === "none"){
@@ -140,7 +140,7 @@
       }
     }, false);
   </script>
-  <script type="Text/javascript"> <!-- 현재 시각 -->
+  <script type="Text/javascript"> // 현재 시각
     function tClock(){
       let vClock = new Date();
       let yy = vClock.getFullYear();
@@ -157,18 +157,77 @@
     tClock();
     setInterval(tClock, 1000);
   </script>
-  <script type="Text/javascript"> <!-- 초시계 -->
-    let offset = 0;
-    let stime = 0;
-    let lcount = 0;
-    let flag;
+  <script type="Text/javascript"> // 초시계
+    let nowt = localStorage.getItem('nowt');
+    if(nowt == null){
+      nowt = "00:00.00";
+    }
+    let offset = localStorage.getItem('offset');
+    if(offset == null){
+      offset = 0;
+    }
+    let stime = localStorage.getItem('stime');
+    if(stime == null){
+      stime = 0;
+    }
+    let lcount;
+    if(lcount == null){
+      lcount = 0;
+    }
+    let flag = localStorage.getItem('flag');
+    if(flag == null){
+      flag = 0;
+    }
+    let tmr;
 
+    console.log(nowt);
+    console.log(flag);
+
+    document.querySelector("#b-lap").addEventListener("click", function() {
+     let labDivList = document.querySelectorAll(".lap-item");
+     let labCount = labDivList.length + 1;
+     let lstw = document.querySelector("#w-stw").innerText;
+     let div = createLabDiv(labCount, lstw);
+     document.querySelector("#w-lap").appendChild(div);
+   }, false);
+
+   function createLabDiv(labCount, lstw) {
+     let div = document.createElement('div');
+     div.className = 'lap-item';
+     div.innerHTML = '<b class="number">' + labCount + '</b>. ' + lstw.substr(0,2) + "<b>:</b>" + lstw.substr(3,2) + "<b>.</b>" + lstw.substr(6,2) + " ";
+     let button = document.createElement('button');
+     button.className = 'cw-lap-button'
+     button.innerHTML = 'X'
+     button.addEventListener('click', function() {
+       removeLab(div);
+     }, false);
+     div.appendChild(button);
+     return div;
+   }
+
+   function removeLab(div) {
+     let labDivList = document.querySelectorAll(".lap-item");
+     let i = labDivList.length - 1;
+     while (i >= 0) {
+       let currentDiv = labDivList[i];
+       if (currentDiv !== div) {
+         currentDiv.querySelector(".number").innerHTML -= 1;
+         i -= 1;
+       } else {
+         break;
+       }
+     }
+     div.remove();
+   }
+
+   /*
     document.querySelector("#b-lap").addEventListener("click", function(){
       lcount++;
       let lstw = document.querySelector("#w-stw").innerText;
       document.querySelector("#w-lap").innerHTML += ('<div><b>' + lcount + '</b>. <span>' + lstw.substr(0,2) + "<b>:</b>" + lstw.substr(3,2) + "<b>.</b>" + lstw.substr(6,2) + ' </span><button class="cw-lap-button">X</button></div>');
       btnSort();
     }, false);
+
 
     function btnSort(){
       let llist = document.querySelector("#w-lap");
@@ -187,55 +246,64 @@
         }, false);
       }
     }
-      /*
-      let lbtns = document.querySelectorAll("#w-lap button");
-          for(let i=0; i<lbtns.length; i++){
-            lbtns[i].addEventListener("click", function(){
-              let ldiv = document.querySelectorAll("#w-lap div");
-              ldiv[i].remove();
-              let lnums = document.querySelectorAll("#w-lap b");
-              for(let j=0; j<lnums.length; j++){
-                lnums[j].innerText = j+1;
-            }
-            lcount--;
-          }, false);
-        }
-      }, false);
-      */
-
+    */
 
     document.querySelector("#b-reset").addEventListener("click", function(){
       offset = 0;
       stime = 0;
       lcount = 0;
+      localStorage.clear();
       document.querySelector("#w-lap").innerHTML = "";
       document.querySelector("#w-stw").innerHTML = "00:00.00";
     }, false);
 
     document.querySelector("#b-resume").addEventListener("click", function(){
-      document.querySelector("#b-lap").style.display = "inline-block";
-      document.querySelector("#b-reset").style.display = "none";
-      document.querySelector("#b-resume").style.display = "none";
-      document.querySelector("#b-pause").style.display = "inline-block";
+      flag = 1;
+      localStorage.setItem('flag', flag);
       offset += new Date().getTime() - stime;
-      flag = setInterval(function(){
-        let ntime = new Date();
-        let tms = ntime.getTime() - offset;
-        let mins = Math.floor(tms/1000/60);
-        let secs = Math.floor(tms/1000)%60;
-        let mss = Math.floor(tms/10%100);
-        document.querySelector("#w-stw").innerHTML = ((mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs + "." + (mss < 10 ? "0" : "") + mss);
-      }, 10);
+      localStorage.setItem('offset', offset);
+      console.log(offset);
+      stwbtns();
     }, false);
 
     document.querySelector("#b-pause").addEventListener("click", function(){
-      document.querySelector("#b-lap").style.display = "none";
-      document.querySelector("#b-reset").style.display = "inline-block";
-      document.querySelector("#b-resume").style.display = "inline-block";
-      document.querySelector("#b-pause").style.display = "none";
+      flag = 0;
+      localStorage.setItem('flag', flag);
       stime = new Date().getTime();
-      clearInterval(flag);
+      localStorage.setItem('stime', stime);
+      stwbtns();
+      localStorage.setItem('nowt', nowt);
     }, false);
 
+    function stwbtns(){
+      if(flag == 0){
+        document.querySelector("#b-lap").style.display = "none";
+        document.querySelector("#b-reset").style.display = "inline-block";
+        document.querySelector("#b-resume").style.display = "inline-block";
+        document.querySelector("#b-pause").style.display = "none";
+        clearInterval(tmr);
+      }
+      else{
+        document.querySelector("#b-lap").style.display = "inline-block";
+        document.querySelector("#b-reset").style.display = "none";
+        document.querySelector("#b-resume").style.display = "none";
+        document.querySelector("#b-pause").style.display = "inline-block";
+        tmr = setInterval(stw, 10);
+      }
+    }
+
+    function stw(){
+      let ntime = new Date();
+      let tms = ntime.getTime() - offset;
+      let mins = Math.floor(tms/1000/60);
+      let secs = Math.floor(tms/1000)%60;
+      let mss = Math.floor(tms/10%100);
+      nowt = ((mins < 10 ? "0" : "") + mins + ":" + (secs < 10 ? "0" : "") + secs + "." + (mss < 10 ? "0" : "") + mss);
+      document.querySelector("#w-stw").innerHTML = nowt;
+    }
+
+    stwbtns();
+    console.log(offset);
+    console.log(stime);
   </script>
 </body></html>
