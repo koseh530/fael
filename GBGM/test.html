@@ -162,64 +162,72 @@
     if(nowt != null){
       document.querySelector("#w-stw").innerHTML = nowt;
     }
-    let offset = Number(localStorage.getItem('offset')); // 방금 고침
-    if(offset == null){
-      offset = 0;
-    }
-    let stime = Number(localStorage.getItem('stime'));
-    if(stime == null){
-      stime = 0;
-    }
-    let lcount;
-    if(lcount == null){
-      lcount = 0;
-    }
-    let flag = Number(localStorage.getItem('flag'));
-    if(flag == null){
-      flag = 0;
-    }
+    let offset = +localStorage.getItem('offset');
+    let stime = +localStorage.getItem('stime');
+    let flag = !!localStorage.getItem('flag');
     let tmr;
+    let jdiv;
 
+    /*
     console.log(nowt);
     console.log(flag);
+    console.log(offset);
+    console.log(stime);
+    */
 
     document.querySelector("#b-lap").addEventListener("click", function() {
-     let labDivList = document.querySelectorAll(".lap-item");
-     let labCount = labDivList.length + 1;
-     let lstw = document.querySelector("#w-stw").innerText;
-     let div = createLabDiv(labCount, lstw);
-     document.querySelector("#w-lap").appendChild(div);
-   }, false);
+      let lapDivList = document.querySelectorAll(".cw-laps");
+      let lapCount = lapDivList.length + 1;
+      let lstw = document.querySelector("#w-stw").innerText;
+      let div = createLapDiv(lapCount, lstw);
+      document.querySelector("#w-lap").appendChild(div);
+      jdiv.push(lstw);
+      localStorage.setItem("laps", JSON.stringify(jdiv));
+    }, false);
 
-   function createLabDiv(labCount, lstw) {
+   function createLapDiv(lapCount, lstw) {
      let div = document.createElement('div');
-     div.className = 'lap-item';
-     div.innerHTML = '<b class="number">' + labCount + '</b>. ' + lstw.substr(0,2) + "<b>:</b>" + lstw.substr(3,2) + "<b>.</b>" + lstw.substr(6,2) + " ";
+     div.className = 'cw-laps';
+     div.innerHTML = '<b class="cw-lnum">' + lapCount + '</b>. ' + lstw.substr(0,2) + "<b>:</b>" + lstw.substr(3,2) + "<b>.</b>" + lstw.substr(6,2) + " ";
      let button = document.createElement('button');
      button.className = 'cw-lap-button'
      button.innerHTML = 'X'
      button.addEventListener('click', function() {
-       removeLab(div);
+       removeLap(div);
      }, false);
      div.appendChild(button);
      return div;
    }
 
-   function removeLab(div) {
-     let labDivList = document.querySelectorAll(".lap-item");
-     let i = labDivList.length - 1;
+   function removeLap(div) {
+     let lapDivList = document.querySelectorAll(".cw-laps");
+     let i = lapDivList.length - 1;
      while (i >= 0) {
-       let currentDiv = labDivList[i];
+       let currentDiv = lapDivList[i];
        if (currentDiv !== div) {
-         currentDiv.querySelector(".number").innerHTML -= 1;
+         currentDiv.querySelector(".cw-lnum").innerHTML -= 1;
          i -= 1;
        } else {
          break;
        }
      }
      div.remove();
+     jdiv.splice(i,1);
+     localStorage.setItem("laps", JSON.stringify(jdiv));
    }
 
+    function loadLaps() {
+      jdiv = JSON.parse(localStorage.getItem("laps"));
+      if(!jdiv){
+        jdiv = new Array;
+      }
+      else{
+        for(let i=0; i<jdiv.length; i++){
+          let div = createLapDiv(i+1, jdiv[i]);
+          document.querySelector("#w-lap").appendChild(div);
+        }
+      }
+    }
    /*
     document.querySelector("#b-lap").addEventListener("click", function(){
       lcount++;
@@ -262,21 +270,20 @@
       localStorage.setItem('flag', flag);
       offset += new Date().getTime() - stime;
       localStorage.setItem('offset', offset);
-      console.log(offset);
-      stwbtns();
+      stwBtns();
     }, false);
 
     document.querySelector("#b-pause").addEventListener("click", function(){
-      flag = 0;
+      flag = "";
       localStorage.setItem('flag', flag);
       stime = new Date().getTime();
       localStorage.setItem('stime', stime);
-      stwbtns();
+      stwBtns();
       localStorage.setItem('nowt', nowt);
     }, false);
 
-    function stwbtns(){
-      if(flag == 0){
+    function stwBtns(){
+      if(!!flag == false){
         document.querySelector("#b-lap").style.display = "none";
         document.querySelector("#b-reset").style.display = "inline-block";
         document.querySelector("#b-resume").style.display = "inline-block";
@@ -302,8 +309,7 @@
       document.querySelector("#w-stw").innerHTML = nowt;
     }
 
-    stwbtns();
-    console.log(offset);
-    console.log(stime);
+    stwBtns();
+    loadLaps();
   </script>
 </body></html>
