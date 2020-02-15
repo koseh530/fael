@@ -20,27 +20,54 @@
     background-color: black;
     color: yellow;
     border: none;
-    padding: 5px;
-    font-size: 15px;
-    width: 80px;
+    padding: 8px;
+    font-size: 16px;
+    width: 120px;
     margin-left: 5px;
   }
-
+  table{
+    border: 2px solid black;
+    border-collapse: collapse;
   }
+  thead{
+    border: 2px solid black;
+  }
+  th, td{
+    border: 1px solid gray;
+    padding: 5px;
+  }
+  .td1{
+    text-align: right;
+  }
+  .td2{
+    padding-right: 20px;
+  }
+
   </style>
 </head>
 
 <body>
   <div class="c-all">
     <div>
-      <button id="201" class="c-button" onclick="loadDoc()">2020/1/1</button>
-      <button id="202" class="c-button">2020/2/1</button>
+      <button id="box2001" class="c-button">2020년 1월</button>
+      <button id="box2002" class="c-button">2020년 2월</button>
     </div>
     <br>
     <div class="c-paragraph"></div>
   </div>
   <script type="text/javascript">
-  function loadDoc(){
+
+  document.querySelector("#box2001").addEventListener("click", function(){
+    let jf = "20200101.json"
+    loadDoc(jf);
+  }, false);
+
+  document.querySelector("#box2002").addEventListener("click", function(){
+    let jf = "20200102.json"
+    loadDoc(jf);
+  }, false);
+
+  function loadDoc(jf){
     let xReq = new XMLHttpRequest();
     if(!xReq){
       alert('cannnot make XMLHTTP instance.');
@@ -50,19 +77,25 @@
       if (this.readyState === 4 && this.status === 200) {
         //readystate (0:uninitialized) (1:loading) (2:loaded) (3:interactive) (4:complete)
         //status 200 OK
-        document.querySelector(".c-paragraph").innerText = this.responseText;
+        let res = JSON.parse(this.responseText).boxOfficeResult.dailyBoxOfficeList;
+        console.log(res);
+        showBoxoffice(res);
+        //document.querySelector(".c-paragraph").innerText = res;
       }
       else{
         document.querySelector(".c-paragraph").innerText = "error in request";
       }
     };
-    xReq.open('GET', '20200101.json');
+    xReq.open('GET', jf);
     xReq.send();
   }
 
-  function myfunction(json){
-    var i;
-    var jsonDoc = json.response
+  function showBoxoffice(arr){
+    let output = "<table><thead><tr><th>순위</th><th>작품명</th><th>개봉일</th></tr></thead><tbody>";
+    for(let i = 0; i < arr.length; i++) {
+      output += '<tr><td class="td1">' + arr[i].rank + '</td><td class="td2">' + arr[i].movieNm + '</td><td class="td3">' + arr[i].openDt + '</td></tr>';
+    }
+    document.querySelector(".c-paragraph").innerHTML = output + "</tbody></table>";
   }
   </script>
 </body>
