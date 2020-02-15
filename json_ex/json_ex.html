@@ -26,18 +26,20 @@
     margin-left: 5px;
   }
   table{
-    border: 2px solid black;
+    border-top: 2px solid black;
     border-collapse: collapse;
   }
   thead{
-    border: 2px solid black;
+    border-bottom: 2px solid black;
   }
   th, td{
-    border: 1px solid gray;
-    padding: 5px;
+    border-bottom: 1px solid gray;
+    padding: 4px;
+    padding-left: 16px;
+    padding-right: 16px;
   }
   .td1{
-    text-align: right;
+    text-align: center;
   }
   .td2{
     padding-right: 20px;
@@ -63,7 +65,7 @@
   }, false);
 
   document.querySelector("#box2002").addEventListener("click", function(){
-    let jf = "20200102.json"
+    let jf = "20200201.json"
     loadDoc(jf);
   }, false);
 
@@ -80,7 +82,6 @@
         let res = JSON.parse(this.responseText).boxOfficeResult.dailyBoxOfficeList;
         console.log(res);
         showBoxoffice(res);
-        //document.querySelector(".c-paragraph").innerText = res;
       }
       else{
         document.querySelector(".c-paragraph").innerText = "error in request";
