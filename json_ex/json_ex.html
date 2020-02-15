@@ -80,7 +80,7 @@
         //readystate (0:uninitialized) (1:loading) (2:loaded) (3:interactive) (4:complete)
         //status 200 OK
         let res = JSON.parse(this.responseText).boxOfficeResult.dailyBoxOfficeList;
-        console.log(res);
+        //console.log(res);
         showBoxoffice(res);
       }
       else{
