@@ -1,17 +1,78 @@
 <!doctype html>
 <html>
+
 <head>
   <title>연습용 통합문서</title>
   <meta charset="utf-8">
+  <style>
+  .c-top{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    background-color: #555555;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    overflow: auto;
+  }
+  .c-topbtn{
+    align: center;
+    display: inline-block;
+    font-family: 'Arial';
+    border-left: 1px solid #555555;
+    background-color: #142857;
+    color: white;
+    padding: 10px;
+  }
+  .c-topbtn:hover{
+    background-color: #428571;
+  }
+  .ct-clock{
+    float: right;
+    align: center;
+    text-align: justify;
+    display: inline-block;
+    font-family: 'Arial';
+    width: 45px;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    padding-left: 15px;
+  }
+  .c-all{
+    padding: 20px;
+  }
+  </style>
 </head>
 <body>
+  <div class="c-top">
+    <span id='t1' class="c-topbtn">GBGM</span>
+    <span id='t2' class="c-topbtn">Clock</span>
+    <span id='t3' class="c-topbtn">json_ex</span>
+  <span class="ct-clock"></span>
+  </div>
+  <div class="c-all">
   <h1>연습</h1>
-  <ol>
-    <li><a href="WEB\index.html">가져와 본 예제</a></li>
-    <li><a href="GBGM\gbgm.html">게임 BGM 5선</a></li>
-    <li><a href="GBGM\test.html">동영상 크기 토글 연습</a></li>
-  </ol>
   <p>잡내용이 서술되는 중인 공간입니다.
   </p>
+</div>
 </body>
+<script type="Text/javascript"> // 시계
+  let cc = ":";
+  function tClock(){
+    let vClock = new Date();
+    let hh = vClock.getHours();
+    let mm = vClock.getMinutes();
+    if(cc === ":"){
+      cc = "&nbsp";
+    }
+    else{
+      cc = ":";
+    }
+    document.querySelector(".ct-clock").innerHTML = ((hh < 10 ? "0" : "" ) + hh + "<span>" + cc + "</span>" + (mm < 10 ? "0" : "") + mm);
+  }
+  tClock();
+  setInterval(tClock, 500);
+</script>
 </html>
