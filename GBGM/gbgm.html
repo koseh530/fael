@@ -4,27 +4,6 @@
   <title>게임 BGM 5선</title>
   <link rel="icon" href="icon2h.png">
   <style type="text/CSS">
-    .c-top{
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      background-color: #555555;
-      position: fixed;
-      top: 0;
-      width: 100%;
-    }
-    .ct-clock{
-      float: right;
-      align: center;
-      display: inline-block;
-      text-align: justify;
-      font-family: 'Arial';
-      width: 50px;
-      background-color: black;
-      color: white;
-      padding: 10px;
-      padding-left: 15px;
-    }
     h1{
       border-bottom: 1px solid grey;
       padding-bottom: 15px;
@@ -48,7 +27,7 @@
       margin-top: 50px;
     }
     .c-all{
-      padding: 20px;
+      padding-left: 20px;
     }
   </style>
   <meta charset="utf-8">
@@ -56,8 +35,6 @@
 
 <body>
   <div id="top"></div>
-  <ul class="c-top">
-  <li class="ct-clock"></li></ul>
   <div class="c-all">
   <h1>게임 BGM 5선</h1>
   <div class="box-index">
@@ -148,7 +125,7 @@
   </div>
   <h2></h2>
 </div>
-  <script type="text/javascript"> <!-- 숨기기 -->
+  <script type="text/javascript"> // 숨기기
     let ca = document.querySelector(".c-all");
     function pFold(head) {
       let p = head.parentNode.nextSibling.nextSibling;
@@ -165,23 +142,6 @@
         pFold(hac);
       }, false);
     }
-  </script>
-  <script type="Text/javascript"> <!-- 시계 -->
-    let cc = ":";
-    function tClock(){
-      let vClock = new Date();
-      let hh = vClock.getHours();
-      let mm = vClock.getMinutes();
-      if(cc === ":"){
-        cc = "&nbsp";
-      }
-      else{
-        cc = ":";
-      }
-      document.querySelector(".ct-clock").innerHTML = ((hh < 10 ? "0" : "" ) + hh + "<span>" + cc + "</span>" + (mm < 10 ? "0" : "") + mm);
-    }
-    tClock();
-    setInterval(tClock, 500);
   </script>
 </body>
 
