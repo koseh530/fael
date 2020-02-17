@@ -3,9 +3,10 @@
 
 <head>
   <title>연습용 통합문서</title>
+  <link rel="icon" href="/GBGM/icon2h.png">
   <meta charset="utf-8">
   <style>
-  .c-top{
+  .ic-top{
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -16,7 +17,7 @@
     width: 100%;
     overflow: auto;
   }
-  .c-topbtn{
+  .ic-topbtn{
     align: center;
     display: inline-block;
     font-family: 'Arial';
@@ -24,11 +25,12 @@
     background-color: #142857;
     color: white;
     padding: 10px;
+    text-decoration: none;
   }
-  .c-topbtn:hover{
+  .ic-topbtn:hover{
     background-color: #428571;
   }
-  .ct-clock{
+  .ict-clock{
     float: right;
     align: center;
     text-align: justify;
@@ -40,27 +42,24 @@
     padding: 10px;
     padding-left: 15px;
   }
-  .c-all{
-    padding: 20px;
+  .ic-all{
+    margin-top: 50px;
   }
   </style>
 </head>
 <body>
-  <div class="c-top">
-    <span id='t1' class="c-topbtn">GBGM</span>
-    <span id='t2' class="c-topbtn">Clock</span>
-    <span id='t3' class="c-topbtn">json_ex</span>
-  <span class="ct-clock"></span>
+  <div class="ic-top">
+    <div id='it1' class="ic-topbtn">GBGM</div>
+    <div id='it2' class="ic-topbtn">json_ex</div>
+  <span class="ict-clock"></span>
   </div>
-  <div class="c-all">
-  <h1>연습</h1>
-  <p>잡내용이 서술되는 중인 공간입니다.
-  </p>
+  <div class="ic-all">
+  <div class="ic-paragraph"></div>
 </div>
 </body>
 <script type="Text/javascript"> // 시계
   let cc = ":";
-  function tClock(){
+  function itClock(){
     let vClock = new Date();
     let hh = vClock.getHours();
     let mm = vClock.getMinutes();
@@ -70,9 +69,53 @@
     else{
       cc = ":";
     }
-    document.querySelector(".ct-clock").innerHTML = ((hh < 10 ? "0" : "" ) + hh + "<span>" + cc + "</span>" + (mm < 10 ? "0" : "") + mm);
+    document.querySelector(".ict-clock").innerHTML = ((hh < 10 ? "0" : "" ) + hh + "<span>" + cc + "</span>" + (mm < 10 ? "0" : "") + mm);
   }
-  tClock();
+  itClock();
   setInterval(tClock, 500);
+</script>
+<script type="Text/javascript"> // from w3schools.com
+  function includeHTML() {
+    var z, i, elmnt, file, xhttp;
+    /*loop through div collection of all HTML elements:*/
+    z = document.querySelectorAll("*");
+    for (i = 0; i < z.length; i++) {
+      elmnt = z[i];
+      /*search for elements with div certain atrribute:*/
+      file = elmnt.getAttribute("w3ih");
+      if (file) {
+        /*make an HTTP request using the attribute value as the file name:*/
+        xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+          if (this.readyState == 4) {
+            if (this.status == 200) {elmnt.innerHTML = this.responseText;}
+            if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
+            /*remove the attribute, and call this function once more:*/
+            elmnt.removeAttribute("w3ih");
+            includeHTML();
+          }
+        }
+        xhttp.open("GET", file, true);
+        xhttp.send();
+        /*exit the function:*/
+        return;
+      }
+    }
+  };
+  document.querySelector('#it1').addEventListener("click", function(){
+    let hf = document.querySelector('.ic-paragraph');
+    hf.innerHTML = '<div w3ih="/GBGM/gbgm.html"></div>';
+    includeHTML();
+  },false);
+  document.querySelector('#it2').addEventListener("click", function(){
+    let hf = document.querySelector('.ic-paragraph');
+    hf.innerHTML = '<div w3ih="/json_ex/json_ex.html"></div>';
+    includeHTML();
+  },false);
+  document.querySelector('.ict-clock').addEventListener("click", function(){
+    let hf = document.querySelector('.ic-paragraph');
+    hf.innerHTML = '<div w3ih="/GBGM/test.html"></div>';
+    includeHTML();
+  },false);
 </script>
 </html>
