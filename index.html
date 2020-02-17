@@ -45,6 +45,13 @@
   .ic-all{
     margin-top: 50px;
   }
+  .ic-frame{
+    display: block;
+    border: none;
+    overflow:hidden;
+    width: 99vw;
+    height: 90vh;
+  }
   </style>
 </head>
 <body>
@@ -56,7 +63,6 @@
   <div class="ic-all">
   <div class="ic-paragraph"></div>
 </div>
-</body>
 <script type="Text/javascript"> // 시계
   let cc = ":";
   function itClock(){
@@ -74,48 +80,54 @@
   itClock();
   setInterval(itClock, 500);
 </script>
-<script type="Text/javascript"> // from w3schools.com
+
+<script type="Text/javascript">
+/*
+// from w3schools
   function includeHTML() {
-    var z, i, elmnt, file, xhttp;
-    /*loop through div collection of all HTML elements:*/
+    let z, i, elmnt, file, xhttp;
+    //loop through div collection of all HTML elements:
     z = document.querySelectorAll("*");
     for (i = 0; i < z.length; i++) {
       elmnt = z[i];
-      /*search for elements with div certain atrribute:*/
+      //search for elements with div certain atrribute:
       file = elmnt.getAttribute("w3ih");
       if (file) {
-        /*make an HTTP request using the attribute value as the file name:*/
+        //make an HTTP request using the attribute value as the file name:
         xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
           if (this.readyState == 4) {
             if (this.status == 200) {elmnt.innerHTML = this.responseText;}
             if (this.status == 404) {elmnt.innerHTML = "Page not found.";}
-            /*remove the attribute, and call this function once more:*/
+            //remove the attribute, and call this function once more:
             elmnt.removeAttribute("w3ih");
             includeHTML();
           }
         }
         xhttp.open("GET", file, true);
         xhttp.send();
-        /*exit the function:*/
+        //exit the function:
         return;
       }
     }
   };
+*/
+
   document.querySelector('#it1').addEventListener("click", function(){
     let hf = document.querySelector('.ic-paragraph');
-    hf.innerHTML = '<div w3ih="GBGM/gbgm.html"></div>';
-    includeHTML();
+    hf.innerHTML = '<iframe class="ic-frame" frameborder="0" allowfullscreen="true" scrolling="auto" src="https://koseh530.github.io/fael/GBGM/gbgm.html"></iframe>';
+    //includeHTML();
   },false);
   document.querySelector('#it2').addEventListener("click", function(){
     let hf = document.querySelector('.ic-paragraph');
-    hf.innerHTML = '<div w3ih="json_ex/json_ex.html"></div>';
-    includeHTML();
+    hf.innerHTML = '<iframe class="ic-frame" frameborder="0" allowfullscreen="true" scrolling="auto" src="https://koseh530.github.io/fael/json_ex/json_ex.html"></iframe>';
+    //includeHTML();
   },false);
   document.querySelector('.ict-clock').addEventListener("click", function(){
     let hf = document.querySelector('.ic-paragraph');
-    hf.innerHTML = '<div w3ih="GBGM/test.html"></div>';
-    includeHTML();
+    hf.innerHTML = '<iframe class="ic-frame" frameborder="0" allowfullscreen="true" scrolling="auto" src="https://koseh530.github.io/fael/GBGM/test.html"></iframe>';
+    //includeHTML();
   },false);
 </script>
+</body>
 </html>
