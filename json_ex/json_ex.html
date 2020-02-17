@@ -51,6 +51,7 @@
 <body>
   <div class="c-all">
     <div>
+      <button id="boxtoday" class="c-button">오늘</button>
       <button id="box2001" class="c-button">2020년 1월</button>
       <button id="box2002" class="c-button">2020년 2월</button>
     </div>
@@ -58,7 +59,13 @@
     <div class="c-paragraph"></div>
   </div>
   <script type="text/javascript">
-
+  
+  document.querySelector("#boxtoday").addEventListener("click", function(){
+    let jf = "http://koseh530.azki.org/movie10/?date=" + getToday();
+    //console.log(jf);
+    loadDoc(jf);
+  }, false);
+    
   document.querySelector("#box2001").addEventListener("click", function(){
     let jf = "20200101.json"
     loadDoc(jf);
@@ -97,6 +104,15 @@
       output += '<tr><td class="td1">' + arr[i].rank + '</td><td class="td2">' + arr[i].movieNm + '</td><td class="td3">' + arr[i].openDt + '</td></tr>';
     }
     document.querySelector(".c-paragraph").innerHTML = output + "</tbody></table>";
+  }
+    
+  function getToday(){
+    let vc = new Date();
+    //vc.setDate(vc.getDate()-1);
+    let yy = vc.getFullYear();
+    let mm = vc.getMonth();
+    let dd = vc.getDate();
+    return (yy < 10 ? "0" : "" ) + yy + (mm < 9 ? "0" : "" ) + (mm + 1) + (dd < 10 ? "0" : "" ) + dd;
   }
   </script>
 </body>
