@@ -151,7 +151,7 @@
       let hh = vClock.getHours();
       let mm = vClock.getMinutes();
       let ss = vClock.getSeconds();
-      document.querySelector("#w-date").innerHTML = (yy + "/" + mt + "/" + dd + "/" + dk);
+      document.querySelector("#w-date").innerHTML = (yy + "/" + (mt+1) + "/" + dd + "/" + dk);
       document.querySelector("#w-time").innerHTML = ((hh < 10 ? "0" : "" ) + hh + ":" + (mm < 10 ? "0" : "") + mm + ":" + (ss < 10 ? "0" : "") + ss);
     }
     tClock();
