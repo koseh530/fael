@@ -4,26 +4,30 @@
   <title>JSON 불러오기</title>
   <link rel="icon" href="icon2h.png">
   <style type="text/CSS">
-  h1{
-    border-bottom: 1px solid grey;
-    padding-bottom: 15px;
+  .l-sidebar{
+    border-right: 2px solid #grey;
+    height: 100%;
+    width: 150px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-top: 12px;
+    overflow:scroll;
   }
-  h2{
-    border-bottom: 1px solid grey;
-    padding-bottom: 15px;
-    margin-top: 50px;
+  .l-button{
+    background-color: black;
+    color: white;
+    border: none;
+    height: 24px;
+    font-size: 12px;
+    text-align: right;
+    width: 120px;
+    margin: 2px;
+    margin-left: 6px;
   }
   .c-all{
-    padding: 20px;
-  }
-  .c-button{
-    background-color: black;
-    color: yellow;
-    border: none;
-    padding: 8px;
-    font-size: 16px;
-    width: 120px;
-    margin-left: 5px;
+    margin-left: 180px;
+    margin-top: 10px;
   }
   table{
     border-top: 2px solid black;
@@ -49,33 +53,32 @@
 </head>
 
 <body>
-  <div class="c-all">
-    <div>
-      <button id="boxyest" class="c-button">어제</button>
-      <!-- 오늘 꺼가 나올 리 없지 -->
-      <button id="box2001" class="c-button">2020년 1월</button>
-      <button id="box2002" class="c-button">2020년 2월</button>
-    </div>
-    <br>
+  <div class="l-sidebar"></div>
+  <div class="c-all"><br>
     <div class="c-paragraph"></div>
   </div>
-  <script type="text/javascript">
-  
-  document.querySelector("#boxyest").addEventListener("click", function(){
-    let jf = "http://koseh530.azki.org/movie10/?date=" + getYest();
-    //console.log(jf);
-    loadDoc(jf);
-  }, false);
-    
-  document.querySelector("#box2001").addEventListener("click", function(){
-    let jf = "20200101.json"
-    loadDoc(jf);
-  }, false);
 
-  document.querySelector("#box2002").addEventListener("click", function(){
-    let jf = "20200201.json"
-    loadDoc(jf);
-  }, false);
+  <script type="text/javascript">
+
+  function createBtn(n){
+    let btn = document.createElement('button');
+    let date = getYest(n);
+    btn.className = 'l-button';
+    btn.innerHTML = '('+n+') ' + date.substr(0,4) + " / " + date.substr(4,2) + " / " + date.substr(6,2);
+    btn.addEventListener('click', function(){
+      let jf = "http://koseh530.azki.org/movie10/?date=" + date;
+      //let jf = "20200201.json";
+      loadDoc(jf);
+    }, false);
+    return btn;
+  }
+
+  var i = 1;
+  while(i <= 100){
+    let btn = createBtn(i);
+    document.querySelector(".l-sidebar").appendChild(btn);
+    i++;
+  }
 
   function loadDoc(jf){
     let xReq = new XMLHttpRequest();
@@ -88,14 +91,14 @@
         //readystate (0:uninitialized) (1:loading) (2:loaded) (3:interactive) (4:complete)
         //status 200 OK
         let res = JSON.parse(this.responseText).boxOfficeResult.dailyBoxOfficeList;
-        //console.log(res);
         showBoxoffice(res);
+        //document.querySelector(".c-paragraph").innerText = res;
       }
       else{
-        document.querySelector(".c-paragraph").innerText = "error in request";
+        document.querySelector(".c-paragraph").innerText = "......";
       }
     };
-    xReq.open('GET', jf);
+    xReq.open('GET', "jf");
     xReq.send();
   }
 
@@ -106,15 +109,16 @@
     }
     document.querySelector(".c-paragraph").innerHTML = output + "</tbody></table>";
   }
-    
-  function getYest(){
+
+  function getYest(n){
     let vc = new Date();
-    vc.setDate(vc.getDate()-1);
+    vc.setDate(vc.getDate()-n);
     let yy = vc.getFullYear();
     let mm = vc.getMonth();
     let dd = vc.getDate();
     return (yy < 10 ? "0" : "" ) + yy + (mm < 9 ? "0" : "" ) + (mm + 1) + (dd < 10 ? "0" : "" ) + dd;
   }
+
   </script>
 </body>
 </html>
