@@ -7,15 +7,12 @@
   <meta charset="utf-8">
   <style>
   .ic-top{
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    background-color: #555555;
+    background-color: #555;
+    width: 100%;
+    height: 40px;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    overflow: auto;
   }
   .ic-topbtn{
     align: center;
@@ -24,7 +21,7 @@
     border-left: 1px solid #555555;
     background-color: #142857;
     color: white;
-    padding: 10px;
+    padding: 11px;
     text-decoration: none;
   }
   .ic-topbtn:hover{
@@ -37,22 +34,23 @@
     text-align: justify;
     display: inline-block;
     font-family: 'Arial';
-    width: 45px;
+    width: 44px;
     background-color: black;
     color: white;
-    padding: 10px;
+    padding: 11px;
     padding-left: 15px;
     cursor:pointer;
   }
   .ic-all{
-    margin-top: 50px;
+    margin-top: 40px;
+
   }
   .ic-frame{
     display: block;
     border: none;
     overflow:hidden;
-    width: 99vw;
-    height: 90vh;
+    width: 98vw;
+    height: 100vh;
   }
   </style>
 </head>
@@ -60,6 +58,7 @@
   <div class="ic-top">
     <div id='it1' class="ic-topbtn">GBGM</div>
     <div id='it2' class="ic-topbtn">json_ex</div>
+    <div id='it3' class="ic-topbtn">Map</div>
   <span class="ict-clock"></span>
   </div>
   <div class="ic-all">
@@ -123,6 +122,11 @@
   document.querySelector('#it2').addEventListener("click", function(){
     let hf = document.querySelector('.ic-paragraph');
     hf.innerHTML = '<iframe class="ic-frame" frameborder="0" allowfullscreen="true" scrolling="auto" src="json_ex/json_ex.html"></iframe>';
+    //includeHTML();
+  },false);
+  document.querySelector('#it3').addEventListener("click", function(){
+    let hf = document.querySelector('.ic-paragraph');
+    hf.innerHTML = '<iframe class="ic-frame" frameborder="0" allowfullscreen="true" scrolling="auto" src="MAP/map_ex.html"></iframe>';
     //includeHTML();
   },false);
   document.querySelector('.ict-clock').addEventListener("click", function(){
