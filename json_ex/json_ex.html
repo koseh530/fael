@@ -1,133 +1,187 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <title>JSON 불러오기</title>
+  <!--
   <link rel="icon" href="icon2h.png">
-  <style type="text/CSS">
-  .l-sidebar{
-    border-right: 2px solid #grey;
-    height: 100%;
-    width: 150px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding-top: 12px;
-    overflow:scroll;
-  }
-  .l-title{
-    padding: 8px;
-    margin-left: 2px;
-    margin-bottom: 12px;
-    font-size: 16px;
-    text-align: center;
-  }
-  .l-button{
-    background-color: black;
-    color: white;
-    border: none;
-    height: 24px;
-    font-size: 12px;
-    text-align: right;
-    width: 120px;
-    margin: 2px;
-    margin-left: 6px;
-  }
-  .c-all{
-    margin-left: 180px;
-    margin-top: 10px;
-  }
-  table{
-    border-top: 2px solid black;
-    border-collapse: collapse;
-  }
-  thead{
-    border-bottom: 2px solid black;
-  }
-  th, td{
-    border-bottom: 1px solid gray;
-    padding: 4px;
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-  .td1{
-    text-align: center;
-  }
-  .td2{
-    padding-right: 20px;
-  }
+-->
 
+  <style type="text/CSS">
+    :root{
+      --scroll-width: 17px;
+      --sidebar-width: 150px;
+    }
+    .l-sidebar{
+      display:inline;
+      background-color: #111;
+      /*border-right: 2px solid grey;*/
+      height: 100%;
+      width: var(--sidebar-width); /* inherit; */
+      float: left;
+      top: 0;
+      left: 0;
+      position: fixed;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+    .l-title{
+      padding: 8px;
+      margin: 8px;
+      color: #abc;
+      font-size: 16px;
+      text-align: center;
+    }
+    .lb-list{
+      margin: 2px;
+      text-align: center;
+    }
+    .l-button{
+      background-color: #765;
+      border: none;
+      color: white;
+      font-size: 12px;
+      font-family: 'arial';
+      text-align: right;
+      max-width: calc(var(--sidebar-width) - var(--scroll-width) - 10px); /* 8px for margin of list&buttons */
+      width: 100%;
+      display: inline;
+      padding: 4px;
+      padding-left: 6px;
+      padding-right: 6px;
+      margin: 2px;
+    }
+    .l-button:hover{
+      background-color: #123;
+    }
+    .l-dragbar{
+      display: inline;
+      background-color: grey;
+      padding: 2px;
+      top: 0;
+      left: var(--sidebar-width);
+      height: 100%;
+      position: fixed;
+      cursor: e-resize;
+    }
+    .c-all{
+      display:inline;
+      top: 0;
+      left: calc(var(--sidebar-width) + 4px);
+      position: fixed;
+    }
+    .c-paragraph{
+      padding: 20px;
+    }
+    table{
+      border-top: 2px solid black;
+      border-collapse: collapse;
+    }
+    thead{
+      border-bottom: 2px solid black;
+    }
+    th, td{
+      border-bottom: 1px solid gray;
+      padding: 4px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .td1{
+      text-align: center;
+    }
+    .td2{
+      padding-right: 20px;
+    }
   </style>
 </head>
 
 <body>
   <div class="l-sidebar">
     <div class="l-title">일별 순위</div>
+    <div class="lb-list"></div>
   </div>
+  <div class="l-dragbar"></div>
   <div class="c-all"><br>
     <div class="c-paragraph"></div>
   </div>
 
-  <script type="text/javascript">
+  <script src="json_loadDoc.js"></script>
+  <script type="text/javascript"> // loadDoc
+    let jt = "http://koseh530.azki.org/today/index.php";
+    let mes = document.querySelector(".c-paragraph");
+    loadDoc(jt, str=>{
+      mes.innerText = str;
+    }, today=>{
+      onset(today);
+    });
 
-  function createBtn(n){
-    let btn = document.createElement('button');
-    let date = getYest(n);
-    btn.className = 'l-button';
-    btn.innerHTML = '('+n+') ' + date.substr(0,4) + " / " + date.substr(4,2) + " / " + date.substr(6,2);
-    btn.addEventListener('click', function(){
-      let jf = "http://koseh530.azki.org/movie10/?date=" + date;
-      //let jf = "20200201.json";
-      loadDoc(jf);
-    }, false);
-    return btn;
-  }
-
-  var i = 1;
-  while(i <= 100){
-    let btn = createBtn(i);
-    document.querySelector(".l-sidebar").appendChild(btn);
-    i++;
-  }
-
-  function loadDoc(jf){
-    let xReq = new XMLHttpRequest();
-    if(!xReq){
-      alert('cannnot make XMLHTTP instance.');
-      return false;
-    }
-    xReq.onreadystatechange = function() {
-      if (this.readyState === 4 && this.status === 200) {
-        //readystate (0:uninitialized) (1:loading) (2:loaded) (3:interactive) (4:complete)
-        //status 200 OK
-        let res = JSON.parse(this.responseText).boxOfficeResult.dailyBoxOfficeList;
-        showBoxoffice(res);
-        //document.querySelector(".c-paragraph").innerText = res;
+    function onset(d){
+      let i = 1;
+      while (i <= 100) {
+        let btn = createBtn(i, d);
+        document.querySelector(".lb-list").appendChild(btn);
+        i++;
       }
-      else{
-        document.querySelector(".c-paragraph").innerText = "......";
-      }
-    };
-    xReq.open('GET', jf);
-    xReq.send();
-  }
-
-  function showBoxoffice(arr){
-    let output = "<table><thead><tr><th>순위</th><th>작품명</th><th>개봉일</th></tr></thead><tbody>";
-    for(let i = 0; i < arr.length; i++) {
-      output += '<tr><td class="td1">' + arr[i].rank + '</td><td class="td2">' + arr[i].movieNm + '</td><td class="td3">' + arr[i].openDt + '</td></tr>';
+      mes.innerText = 'Boxoffice loaded!';
     }
-    document.querySelector(".c-paragraph").innerHTML = output + "</tbody></table>";
-  }
 
-  function getYest(n){
-    let vc = new Date();
-    vc.setDate(vc.getDate()-n);
-    let yy = vc.getFullYear();
-    let mm = vc.getMonth();
-    let dd = vc.getDate();
-    return (yy < 10 ? "0" : "" ) + yy + (mm < 9 ? "0" : "" ) + (mm + 1) + (dd < 10 ? "0" : "" ) + dd;
-  }
+    function createBtn(n, d) {
+      let btn = document.createElement('button');
+      let date = getYest(n, d) + "";
+      btn.className = 'l-button';
+      btn.innerHTML = '(' + n + ') ' + date.substr(0, 4) + " / " + date.substr(4, 2) + " / " + date.substr(6, 2);
+      btn.addEventListener('click', function() {
+        let jf = "http://koseh530.azki.org/movie10/?date=" + date;
+        //let jf = "https://koseh530.github.io/fael/json_ex/" + date + ".json";
+        loadDoc(jf, str=>{
+          mes.innerText = str;
+        }, boxText=>{
+          showBoxoffice(JSON.parse(boxText).boxOfficeResult.dailyBoxOfficeList);
+        });
+      }, false);
+      return btn;
+    }
 
+    function showBoxoffice(arr) {
+      let output = "<table><thead><tr><th>순위</th><th>작품명</th><th>개봉일</th></tr></thead><tbody>";
+      for (let i = 0; i < arr.length; i++) {
+        output += '<tr><td class="td1">' + arr[i].rank + '</td><td class="td2">' + arr[i].movieNm + '</td><td class="td3">' + arr[i].openDt + '</td></tr>';
+      }
+      mes.innerHTML = output + "</tbody></table>";
+    }
+  </script>
+  <script type="text/javascript"> // dragbar
+    let lastX;
+    let bar = document.querySelector(".l-dragbar");
+
+    bar.addEventListener('mousedown', function(event){
+      if(event.which === 1){ // (left click)
+        lastX = event.pageX;
+        addEventListener('mousemove', moving);
+        event.preventDefault();
+      }
+    },false);
+
+    function moving(event){
+     if(!isPressed(event)){
+      removeEventListener('mousemove', moving);
+     }
+     else{
+       var dist = event.pageX - lastX;
+       var newX = Math.max(150, bar.offsetLeft + dist);
+       bar.style.left = newX + 'px';
+       document.querySelector(".l-sidebar").style.width = newX + 'px';
+       document.querySelector(".c-all").style.left = newX + 2 + 'px';
+       lastX = event.pageX;
+     }
+    }
+
+    function isPressed(event){
+      if (event.buttons == null)
+        return event.whitch != 0;
+      else
+        return event.buttons != 0;
+    }
   </script>
 </body>
 </html>
