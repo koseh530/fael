@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<title>Kakao 지도 연습</title>
+  <style>
+    .map{
+      width: 100vw;
+			height: 100vh;
+    }
+
+  </style>
+</head>
+<body>
+	<div class="map"></div>
+	<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6f9730bc4b42c681cfc94678d83d0eab."></script>
+	<script>
+		var container = document.querySelector('.map');
+		var options = {
+			center: new kakao.maps.LatLng(33.450701, 126.570667),
+			level: 3
+		};
+
+		var map = new kakao.maps.Map(container, options);
+	</script>
+</body>
+</html>
